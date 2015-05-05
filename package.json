@@ -1,12 +1,22 @@
 {
   "name": "node-service-discovery-zk",
-  "version": "1.0.0",
-  "description": "ZooKeeper Service Discovery Manager",
+  "version": "0.1.0",
+  "description": "Service Discovery via ZooKeeper for Node",
   "main": "index.js",
+  "keywords": [
+    "zookeeper",
+    "service",
+    "discovery",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ph0bos/node-service-discovery-zk"
+  },
   "scripts": {
     "test": "mocha --recursive --reporter spec test/*"
   },
-  "author": "",
+  "author": "Steven Robinson",
   "license": "ISC",
   "dependencies": {
     "node-zookeeper-client": "^0.2.2"
