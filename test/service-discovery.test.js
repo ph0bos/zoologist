@@ -1,46 +1,31 @@
 var mocha   = require('mocha');
-var should  = require('chai').should()
+var mockery = require('mockery');
+var should  = require('chai').should();
 
-var sd = require('..');
+var ServiceDiscovery = require('..').ServiceDiscovery;
+var ServiceProvider  = require('..').ServiceProvider;
 
-describe('service-discovery', function() {
-
-  var client;
+describe('ServiceDiscovery', function() {
+  var serviceDiscovery;
 
   beforeEach(function(done){
-    client = sd.ServiceDiscovery.createServiceDiscoveryClient();
+    serviceDiscovery = new ServiceDiscovery('localhost:2181', 'services', 'test/service/path/v2');
+    serviceProvider = new ServiceProvider('localhost:2181', 'services', 'test/service/path/v2');
     done();
   });
 
-  it('should create a service discovery client', function() {
-    client.should.be.a('object');
+  it('should create a service discovery instance', function() {
+    serviceDiscovery.should.be.a('object');
   });
 
-  it('should have a registerService function', function() {
-    client.registerService.should.be.a('function');
-  });
-
-  it('should have a unregisterService function', function() {
-    client.unregisterService.should.be.a('function');
-  });
-
-  it('should have a getServiceInstance function', function() {
-    client.getServiceInstance.should.be.a('function');
-  });
-
-  it('getServiceInstance should return a random instance when called with an existing service path', function(done) {
-    client.getServiceInstance('/services/content/tv/repository/v1', function(err, children, stat) {
-      console.log(children.address, children.port);
-      children.address.should.be.a('string');
-      done();
+  it('registerService() should return the created path', function(done) {
+    serviceDiscovery.registerService('localhost', 8080, function (err, path) {
+      serviceProvider.getInstance(function(err, service, stat) {
+        console.log(JSON.stringify(service));
+        service.address.should.be.a('string');
+        service.port.should.be.a('number');
+        done();
+      });
     });
   });
-
-  it('getServiceInstance should throw a NotFoundError when called with a non-existant service path', function(done) {
-    client.getServiceInstance('/services/content/tv/repository/v2', function(err, children, stat) {
-      err.should.be.a('object');
-      done();
-    });
-  });
-  
 });
