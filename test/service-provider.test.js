@@ -5,9 +5,9 @@ var should  = require('chai').should();
 var ZooKeeperClient = require('..').ZooKeeperClient;
 var ServiceProvider = require('..').ServiceProvider;
 
-describe('ServiceProvider', function() {
+var zkClient = new ZooKeeperClient('localhost:2181', 'services');
 
-  var zkClient = new ZooKeeperClient('localhost:2181', 'services');
+describe('ServiceProvider', function() {
 
   it('should create a service provider instance', function() {
     var serviceProvider = new ServiceProvider(zkClient, 'content/tv/repository/v1');

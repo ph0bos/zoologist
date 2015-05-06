@@ -6,13 +6,12 @@ var ZooKeeperClient  = require('..').ZooKeeperClient;
 var ServiceDiscovery = require('..').ServiceDiscovery;
 var ServiceProvider  = require('..').ServiceProvider;
 
+var zkClient = new ZooKeeperClient('localhost:2181', 'services');
+
 describe('ServiceDiscovery', function() {
-  
-  var serviceDiscovery;
-  var zkClient = new ZooKeeperClient('localhost:2181', 'services');
 
   beforeEach(function(done){
-    serviceDiscovery = new ServiceDiscovery('localhost:2181', 'services', 'test/service/path/v2');
+    serviceDiscovery = new ServiceDiscovery(zkClient, 'test/service/path/v2');
     serviceProvider = new ServiceProvider(zkClient, 'test/service/path/v2');
     done();
   });
