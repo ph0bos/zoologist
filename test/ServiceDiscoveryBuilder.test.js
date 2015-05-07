@@ -23,7 +23,7 @@ describe('ServiceDiscoveryBuilder', function() {
   	var serviceDiscovery = builder.build();
 
     serviceDiscovery.should.be.a('object');
-    serviceDiscovery.basePath.should.equal('services');
+    serviceDiscovery.basePath.should.equal('/services');
     serviceDiscovery.client.should.be.a('object');
   });
 });
