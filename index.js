@@ -6,10 +6,14 @@
  *
  */
 
-var ZooKeeperClient  = require('./lib/ZooKeeperClient');
-var ServiceProvider  = require('./lib/ServiceProvider');
-var ServiceDiscovery = require('./lib/ServiceDiscovery');
+var Zoologist               = require('./lib/Zoologist');
+var ServiceDiscoveryBuilder = require('./lib/ServiceDiscoveryBuilder');
+var ServiceDiscovery        = require('./lib/ServiceDiscovery');
 
-exports.ZooKeeperClient  = ZooKeeperClient;
-exports.ServiceDiscovery = ServiceDiscovery;
-exports.ServiceProvider  = ServiceProvider;
+// var ServiceProvider  = require('./lib/ServiceProvider');
+
+exports.Zoologist               = Zoologist;
+exports.ServiceDiscoveryBuilder = ServiceDiscoveryBuilder;
+exports.ServiceDiscovery        = ServiceDiscovery;
+
+// exports.ServiceProvider  = ServiceProvider;
