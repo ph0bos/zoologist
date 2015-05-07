@@ -51,4 +51,18 @@ describe('ServiceDiscovery', function() {
       });
     });
   });
+
+  it('should create a ServiceProviderBuilder when calling serviceProviderBuilder()', function(done) {
+    var serviceProviderBuilder = serviceDiscovery.serviceProviderBuilder();
+    
+    serviceProviderBuilder.should.be.a('object');
+    done();
+  });
+
+  it('should create a ServiceProvider with a pre-populated ServiceDiscovery property when calling the result of serviceProviderBuilder()', function(done) {
+    var serviceProvider = serviceDiscovery.serviceProviderBuilder().build();
+
+    serviceProvider.serviceDiscovery.should.be.a('object');
+    done();
+  });
 });
