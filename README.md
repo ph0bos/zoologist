@@ -1,2 +1,2 @@
-# node-service-discovery-zk
-ZooKeeper Service Discovery
+# Zoologist
+A Curator-esque framework for ZooKeeper
