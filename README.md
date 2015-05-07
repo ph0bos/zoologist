@@ -1,2 +1,2 @@
 # Zoologist
-A Curator-esque framework for ZooKeeper
+A Curator-esque Node.js framework for ZooKeeper.
