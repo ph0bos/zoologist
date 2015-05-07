@@ -20,13 +20,25 @@ describe('ServiceDiscovery', function() {
     serviceDiscovery.should.be.a('object');
   });
 
-  it('registerService() should return the created path', function(done) {
+  it('should register a service when calling registerService()', function(done) {
     serviceDiscovery.registerService('localhost', 8080, function (err, path) {
       serviceProvider.getInstance(function(err, service, stat) {
         console.log(JSON.stringify(service));
         service.address.should.be.a('string');
         service.port.should.be.a('number');
         done();
+      });
+    });
+  });
+
+  it('should unregister a service when calling unRegisterService()', function(done) {
+    serviceDiscovery.registerService('localhost', 8080, function (err, path) {
+      serviceProvider.getInstance(function(err, service, stat) {
+        serviceDiscovery.unRegisterService(service.id, function(err, res) {
+          should.not.exist(err);
+          should.exist(res);
+          done();
+        });
       });
     });
   });
