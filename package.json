@@ -1,6 +1,6 @@
 {
   "name": "zoologist",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A Curator-esque framework for ZooKeeper",
   "main": "index.js",
   "keywords": [
