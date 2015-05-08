@@ -35,17 +35,27 @@ var serviceDiscovery = ServiceDiscoveryBuilder
 
 // Service Provider
 var serviceProvider = serviceDiscovery.serviceProviderBuilder()
-                        .serviceName(''my/service/name/v1'')
+                        .serviceName('my/service/name/v1)
                         .build();
 
 // Register a Service
 serviceDiscovery.registerService(function onRegister(err, data) {
-  console.log({ id: data.id, name: data.name, address: data.address, port: data.port }, 'initialised service');
+  console.log({ 
+    id: data.id, 
+    name: data.name, 
+    address: data.address, 
+    port: data.port 
+  });
 }); 
 
 // Get a random Service instance
 serviceProvider.getInstance(function onInstanceReturn(err, data) {
-  console.log({ id: data.id, name: data.name, address: data.address, port: data.port }, 'returned service instance');
+  console.log({ 
+    id: data.id, 
+    name: data.name, 
+    address: data.address, 
+    port: data.port 
+  });
 }); 
 
 ```
