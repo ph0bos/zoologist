@@ -77,7 +77,7 @@ var serviceDiscovery = ServiceDiscoveryBuilder
 
 // Service Provider
 var serviceProvider = serviceDiscovery.serviceProviderBuilder()
-                        .serviceName('my/service/name/v1)
+                        .serviceName('my/service/name/v1')
                         .build();
 
 // Discover available Services and provide an instance
