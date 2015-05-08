@@ -6,6 +6,7 @@ logs
 pids
 *.pid
 *.seed
+*.tgz
 target
 mocha.json
 

@@ -1,17 +1,18 @@
 {
-  "name": "service-discovery",
+  "name": "zoologist",
   "version": "0.1.0",
-  "description": "Service Discovery using ZooKeeper",
+  "description": "A Curator-esque framework for ZooKeeper",
   "main": "index.js",
   "keywords": [
     "zookeeper",
     "service",
     "discovery",
-    "javascript"
+    "javascript",
+    "curator"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ph0bos/node-service-discovery-zk"
+    "url": "https://github.com/ph0bos/zoologist"
   },
   "scripts": {
     "test": "mocha --recursive --reporter spec test/*"
