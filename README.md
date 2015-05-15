@@ -86,7 +86,8 @@ serviceProvider.getInstance(function onInstanceReturn(err, data) {
     id: data.id, 
     name: data.name, 
     address: data.address, 
-    port: data.port 
+    port: data.port,
+    serviceUrl: serviceUrl 
   });
 }); 
 

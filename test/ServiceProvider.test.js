@@ -38,11 +38,28 @@ describe('ServiceProvider', function() {
   });
 
   it('getInstance() should return a random instance when called with an existing service path', function(done) {
-
     serviceDiscovery.registerService(function (err, data) {
       serviceProvider.getInstance(function(err, service, stat) {
         service.address.should.be.a('string');
         service.port.should.be.a('number');
+        done();
+      });
+    });
+  });
+
+  it('getInstance() should return a random instance when called with an existing service path that has a valid uriSpec', function(done) {
+    serviceDiscovery.registerService(function (err, data) {
+      serviceProvider.getInstance(function(err, service, stat) {
+        service.uriSpec.should.equal('http://localhost:12345');
+        done();
+      });
+    });
+  });
+
+  it('getInstance() should return a random instance when called with an existing service path that has a valid serviceUrl', function(done) {
+    serviceDiscovery.registerService(function (err, data) {
+      serviceProvider.getInstance(function(err, service, stat) {
+        service.serviceUrl.should.equal('http://localhost:12345/my/service/v1');
         done();
       });
     });
