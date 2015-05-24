@@ -1,5 +1,5 @@
 # Zoologist
-A Curator-esque Node.js framework for ZooKeeper.
+A Curator-esque ZooKeeper framework for Node.js.
 
 ## Installation
 
