@@ -10,9 +10,11 @@ describe('ServiceDiscoveryBuilder', function() {
 
   beforeEach(function(){
     client  = Zoologist.newClient('127.0.0.1:2181');
+    client.start();
+
     builder = ServiceDiscoveryBuilder.builder();
 
-    serviceInstance = 
+    serviceInstance =
       ServiceInstanceBuilder
         .builder()
         .address('localhost')
