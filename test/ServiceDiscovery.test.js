@@ -10,17 +10,19 @@ describe('ServiceDiscovery', function() {
 
   beforeEach(function(done){
     client  = Zoologist.newClient('127.0.0.1:2181');
+    client.start();
+    
     builder = ServiceDiscoveryBuilder.builder();
 
-    serviceInstance = 
+    serviceInstance =
       ServiceInstanceBuilder
         .builder()
         .address('localhost')
         .port(12345)
         .name('my/service/v1')
         .build();
-    
-    serviceDiscovery = 
+
+    serviceDiscovery =
       builder
         .client(client)
         .thisInstance(serviceInstance)
@@ -54,7 +56,7 @@ describe('ServiceDiscovery', function() {
 
   it('should create a ServiceProviderBuilder when calling serviceProviderBuilder()', function(done) {
     var serviceProviderBuilder = serviceDiscovery.serviceProviderBuilder();
-    
+
     serviceProviderBuilder.should.be.a('object');
     done();
   });
