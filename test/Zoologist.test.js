@@ -21,4 +21,13 @@ describe('Zoologist', function() {
   it('should close the framework when calling close()', function() {
     zoologist.close();
   });
+
+  it('should get all children recursively when calling getChildren()', function(done) {
+    zoologist.start();
+
+    zoologist.getChildren('/services', function (err, children) {
+      console.log(children);
+      done();
+    });
+  });
 });
