@@ -22,11 +22,13 @@ describe('Zoologist', function() {
     zoologist.close();
   });
 
-  it('should get all children recursively when calling getChildren()', function(done) {
+  it('should get return an array of children when calling getChildren()', function(done) {
     zoologist.start();
 
     zoologist.getChildren('/services', function (err, children) {
-      console.log(children);
+      children.should.be.instanceof(Array);
+      children.should.have.length.above(0);
+      children.should.include('my/service/v1');
       done();
     });
   });
