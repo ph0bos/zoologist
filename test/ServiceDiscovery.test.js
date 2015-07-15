@@ -11,7 +11,7 @@ describe('ServiceDiscovery', function() {
   beforeEach(function(done){
     client  = Zoologist.newClient('127.0.0.1:2181');
     client.start();
-    
+
     builder = ServiceDiscoveryBuilder.builder();
 
     serviceInstance =
@@ -29,7 +29,9 @@ describe('ServiceDiscovery', function() {
         .basePath('services')
         .build();
 
-    done();
+    serviceDiscovery.registerService(function onRegister(err, data) {
+      done();
+    });
   });
 
   it('should create a service discovery instance', function() {
