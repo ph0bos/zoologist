@@ -31,7 +31,9 @@ describe('ServiceProvider', function() {
 
     serviceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v1');
 
-    done();
+    serviceDiscovery.registerService(function onRegister(err, data) {
+      done();
+    });
   });
 
   it('should create a service provider instance', function() {
@@ -67,7 +69,7 @@ describe('ServiceProvider', function() {
   });
 
   it('getInstance() should throw a NotFoundError when called with a non-existant service path', function(done) {
-    noServiceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v2');
+    noServiceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v3');
 
     noServiceProvider.getInstance(function(err, service, stat) {
       err.should.be.a('object');
