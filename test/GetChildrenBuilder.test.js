@@ -48,13 +48,12 @@ describe('GetChildrenBuilder', function() {
       });
   });
 
-  it('should return a zero-length array of children when calling getChildren() on a non-existant path', function(done) {
+  it('should return a zero-length array of children when calling getChildren() on a non-existent path', function(done) {
     GetChildrenBuilder
       .builder()
       .client(client)
       .forPath('/noServices', function (err, children) {
-        children.should.be.instanceof(Array);
-        children.should.have.length.of(0);
+        err.should.be.a('object');
         done();
       });
   });
