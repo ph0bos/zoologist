@@ -69,4 +69,18 @@ describe('ServiceDiscovery', function() {
     serviceProvider.serviceDiscovery.should.be.a('object');
     done();
   });
+
+  it('should find service instances when calling queryForInstances()', function(done) {
+    serviceDiscovery.registerService(function (err, data) {
+      data.address.should.be.a('string');
+      data.port.should.be.a('number');
+      serviceDiscovery.queryForInstances('my/service/v1', function (err, instances) {
+        should.not.exist(err);
+        should.exist(instances);
+        instances.should.be.instanceof(Array).and.not.have.lengthOf(0);
+        done();
+      });
+
+    });
+  });
 });
