@@ -62,6 +62,9 @@ var ServiceDiscoveryBuilder = require('zoologist').ServiceDiscoveryBuilder;
 // Client
 var zoologistClient = Zoologist.newClient('127.0.0.1:2181');
 
+// Start the client (connect to ZooKeeper)
+zoologistClient.start();
+
 // Service Instance
 var serviceInstance = ServiceInstanceBuilder
                         .builder()
