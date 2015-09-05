@@ -8,18 +8,22 @@ var ServiceDiscoveryBuilder = require('..').ServiceDiscoveryBuilder;
 
 describe('ServiceDiscoveryBuilder', function() {
 
-  beforeEach(function(){
+  beforeEach(function(done){
     client  = Zoologist.newClient('127.0.0.1:2181');
     client.start();
 
-    builder = ServiceDiscoveryBuilder.builder();
+    client.once('connected', function () {
+      builder = ServiceDiscoveryBuilder.builder();
 
-    serviceInstance =
-      ServiceInstanceBuilder
-        .builder()
-        .address('localhost')
-        .port(12345)
-        .build();
+      serviceInstance =
+        ServiceInstanceBuilder
+          .builder()
+          .address('localhost')
+          .port(12345)
+          .build();
+          
+      done();
+    });
   });
 
   it('should instantiate an instance of ServiceDiscoveryBuilder when calling builder()', function() {

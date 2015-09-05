@@ -18,6 +18,20 @@ describe('Zoologist', function() {
     zoologist.start();
   });
 
+  it('should be classified as started once start() has been called', function() {
+    zoologist.start();
+  });
+
+  it('should be classified as not started if the start() function has not been called', function() {
+    zoologist.getStarted().should.equal(false);
+  });
+
+  it('should be classified as not started if the close() function has been called', function() {
+    zoologist.start();
+    zoologist.close();
+    zoologist.getStarted().should.equal(false);
+  });
+
   it('should close the framework when calling close()', function() {
     zoologist.close();
   });

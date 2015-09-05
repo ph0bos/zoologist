@@ -13,26 +13,28 @@ describe('GetChildrenBuilder', function() {
     client  = Zoologist.newClient('127.0.0.1:2181');
     client.start();
 
-    serviceInstance =
-      ServiceInstanceBuilder
-        .builder()
-        .address('localhost')
-        .port(12345)
-        .name('my/service/v2')
-        .build();
+    client.once('connected', function () {
+      serviceInstance =
+        ServiceInstanceBuilder
+          .builder()
+          .address('localhost')
+          .port(12345)
+          .name('my/service/v2')
+          .build();
 
-    serviceDiscovery =
-      ServiceDiscoveryBuilder
-        .builder()
-        .client(client)
-        .thisInstance(serviceInstance)
-        .basePath('services')
-        .build();
+      serviceDiscovery =
+        ServiceDiscoveryBuilder
+          .builder()
+          .client(client)
+          .thisInstance(serviceInstance)
+          .basePath('services')
+          .build();
 
-    serviceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v2');
+      serviceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v2');
 
-    serviceDiscovery.registerService(function onRegister(err, data) {
-      done();
+      serviceDiscovery.registerService(function onRegister(err, data) {
+        done();
+      });
     });
   });
 
