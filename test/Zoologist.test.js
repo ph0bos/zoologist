@@ -26,10 +26,22 @@ describe('Zoologist', function() {
     zoologist.getStarted().should.equal(false);
   });
 
-  it('should be classified as not started if the close() function has been called', function() {
+  it('should be classified as not started if the close() function has been called', function(done) {
     zoologist.start();
     zoologist.close();
-    zoologist.getStarted().should.equal(false);
+    zoologist.once('connected', function() {
+      zoologist.getStarted().should.equal(false);
+      done();
+    });
+  });
+
+  it('should be classified as not started if the isConnected() function has been called', function(done) {
+    zoologist.start();
+
+    zoologist.once('connected', function() {
+      zoologist.isConnected().should.equal(true);
+      done();
+    });
   });
 
   it('should close the framework when calling close()', function() {
