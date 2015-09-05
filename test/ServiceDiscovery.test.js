@@ -12,25 +12,27 @@ describe('ServiceDiscovery', function() {
     client  = Zoologist.newClient('127.0.0.1:2181');
     client.start();
 
-    builder = ServiceDiscoveryBuilder.builder();
+    client.once('connected', function () {
+      builder = ServiceDiscoveryBuilder.builder();
 
-    serviceInstance =
-      ServiceInstanceBuilder
-        .builder()
-        .address('localhost')
-        .port(12345)
-        .name('my/service/v1')
-        .build();
+      serviceInstance =
+        ServiceInstanceBuilder
+          .builder()
+          .address('localhost')
+          .port(12345)
+          .name('my/service/v1')
+          .build();
 
-    serviceDiscovery =
-      builder
-        .client(client)
-        .thisInstance(serviceInstance)
-        .basePath('services')
-        .build();
+      serviceDiscovery =
+        builder
+          .client(client)
+          .thisInstance(serviceInstance)
+          .basePath('services')
+          .build();
 
-    serviceDiscovery.registerService(function onRegister(err, data) {
-      done();
+      serviceDiscovery.registerService(function onRegister(err, data) {
+        done();
+      });
     });
   });
 
