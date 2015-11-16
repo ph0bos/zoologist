@@ -28,8 +28,8 @@ describe('Zoologist', function() {
 
   it('should be classified as not started if the close() function has been called', function(done) {
     zoologist.start();
-    zoologist.close();
     zoologist.once('connected', function() {
+      zoologist.close();
       zoologist.getStarted().should.equal(false);
       done();
     });
