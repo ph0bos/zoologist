@@ -42,7 +42,6 @@ describe('ServiceDiscovery', function() {
 
   it('should register a service when calling registerService()', function(done) {
     serviceDiscovery.registerService(function (err, data) {
-      data.basePath.should.be.a('string');
       data.address.should.be.a('string');
       data.port.should.be.a('number');
       done();
