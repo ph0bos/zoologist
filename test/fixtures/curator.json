@@ -1,0 +1,28 @@
+{
+  "name": "pipeline/superdesk/content/v0.1",
+  "id": "b0b7b427-1b49-4493-afa6-763cecf30253",
+  "address": "52.31.63.137",
+  "port": 10000,
+  "sslPort": null,
+  "payload": null,
+  "registrationTimeUTC": 1447867258151,
+  "serviceType": "DYNAMIC",
+  "uriSpec": {
+    "parts": [{
+      "value": "scheme",
+      "variable": true
+    }, {
+      "value": "://",
+      "variable": false
+    }, {
+      "value": "address",
+      "variable": true
+    }, {
+      "value": ":",
+      "variable": false
+    }, {
+      "value": "port",
+      "variable": true
+    }]
+  }
+}

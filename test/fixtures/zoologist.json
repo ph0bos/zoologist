@@ -1,0 +1,30 @@
+{
+  "id": "db3362a7-da09-4409-a5be-469032afd982",
+  "name": "publish/content/notification-relay/v0.1",
+  "address": "10.0.1.141",
+  "port": 10003,
+  "scheme": "http",
+  "sslPort": null,
+  "payload": null,
+  "registrationTimeUTC": 1446831186749,
+  "serviceType": "DYNAMIC",
+  "uriSpec": {
+    "parts": [{
+      "value": "scheme",
+      "variable": true
+    }, {
+      "value": "://",
+      "variable": false
+    }, {
+      "value": "address",
+      "variable": true
+    }, {
+      "value": ":",
+      "variable": false
+    }, {
+      "value": "port",
+      "variable": true
+    }]
+  },
+  "basePath": "services"
+}
