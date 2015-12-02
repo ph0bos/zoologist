@@ -1,6 +1,8 @@
 # Zoologist
 A Curator-esque ZooKeeper framework for Node.js.
 
+[![NPM](https://nodei.co/npm/zoologist.png)](https://npmjs.org/package/zoologist)
+
 ## Installation
 
     npm install zoologist --save
