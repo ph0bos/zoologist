@@ -72,6 +72,16 @@ describe('ServiceDiscovery', function() {
     done();
   });
 
+  it('should create a ServiceProvider with a pre-populated ServiceDiscovery property that is capable of having an overriden providerStrategy when calling the result of serviceProviderBuilder()', function(done) {
+    var serviceProviderBuilder = serviceDiscovery.serviceProviderBuilder();
+
+    serviceProviderBuilder.providerStrategy('RoundRobin');
+
+    serviceProvider = serviceProviderBuilder.build();
+    serviceProvider.serviceDiscovery.should.be.a('object');
+    done();
+  });
+
   it('should find service instances when calling queryForInstances() with a valid serviceId', function(done) {
     serviceDiscovery.registerService(function (err, data) {
       data.address.should.be.a('string');
