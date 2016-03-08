@@ -83,9 +83,10 @@ var serviceDiscovery = ServiceDiscoveryBuilder
                          .basePath('services')
                          .build();
 
-// Service Provider
+// Service Provider (providerStrategy: 'RoundRobin' or 'Random')
 var serviceProvider = serviceDiscovery.serviceProviderBuilder()
                         .serviceName('my/service/name/v1')
+                        .providerStrategy('RoundRobin')
                         .build();
 
 // Discover available Services and provide an instance

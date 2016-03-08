@@ -30,7 +30,7 @@ describe('ServiceProvider', function() {
           .basePath('services')
           .build();
 
-      serviceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v1');
+      serviceProvider = new ServiceProvider(serviceDiscovery, 'my/service/v1', 'RoundRobin');
 
       serviceDiscovery.registerService(function onRegister(err, data) {
         done();
