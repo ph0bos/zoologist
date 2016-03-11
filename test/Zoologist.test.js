@@ -30,8 +30,11 @@ describe('Zoologist', function() {
     zoologist.start();
     zoologist.once('connected', function() {
       zoologist.close();
-      zoologist.getStarted().should.equal(false);
-      done();
+
+      zoologist.once('disconnected', function() {
+        zoologist.getStarted().should.equal(false);
+        done();
+      });
     });
   });
 
@@ -44,7 +47,18 @@ describe('Zoologist', function() {
     });
   });
 
-  it('should close the framework when calling close()', function() {
-    zoologist.close();
+  it('should close the framework when calling close()', function(done) {
+
+    zoologist.start();
+
+    zoologist.once('connected', function() {
+
+      zoologist.close();
+      zoologist.once('disconnected', function() {
+
+        zoologist.isConnected().should.be.false();
+        done();
+      });
+    });
   });
 });
