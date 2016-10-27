@@ -1,38 +1,34 @@
 'use strict';
 
-var Zoologist      = require('..').Zoologist;
+var Zoologist = require('..').Zoologist;
+
 var LeaderElection = require('..').LeaderElection;
 
-var election;
-
-var client  = Zoologist.newClient('127.0.0.1:2181');
-
+var client = Zoologist.newClient('127.0.0.1:2181');
 client.start();
 
-client.on('connected', function () {
-  election = new LeaderElection(client, '/my/path', 'my-id');
+var election = new LeaderElection(client, '/my/path', 'my-id');
 
-  election.start(function(err, node) {
-    console.log(node);
-  });
-
-  election.on('gleader', function(e) {
-    console.log('gleader: ' + e);
-  });
-
-  election.on('topology', function(data) {
-    console.log('topology: ' + data);
-  });
-
-  election.on('error', function(err) {
-    console.log('error: ' + err);
-  });
-
+election.on('gleader', function () {
+  console.log('I am the leader, watch me lead!');
 });
 
+election.on('leader', function (myLeader) {
+  console.log('My leader is', myLeader);
+});
 
-//election.watch('/my/path');
+election.on('follower', function (myFollower) {
+  console.log('My follower is', myFollower);
+});
 
-setInterval(function() {
+election.on('topology', function (data) {
+  console.log('Topology Change: ' + data);
+});
+
+election.on('error', function (err) {
+  console.log('Error: ' + err);
+});
+
+setInterval(function () {
   console.log(election.hasLeadership());
 }, 5000);

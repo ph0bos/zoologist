@@ -5,34 +5,36 @@ var should  = require('chai').should();
 var Zoologist      = require('..').Zoologist;
 var LeaderElection = require('..').LeaderElection;
 
-var leaderElection;
-
 describe('LeaderElection', function() {
 
-  beforeEach(function(done){
+  beforeEach(function(){
     client  = Zoologist.newClient('127.0.0.1:2181');
     client.start();
+  });
 
-    client.once('connected', function () {
-      leaderElection = new LeaderElection(client);
+  it('should trigger a leader event when the leader is chosen', function(done) {
 
+    var election = new LeaderElection(client, '/my/path', 'my-name');
+
+    election.on('gleader', function () {
+      election._isGLeader.should.be.true();
       done();
     });
   });
 
-  it('start() should start an election', function(done) {
+  it('should trigger only one leader event when the leader is chosen', function(done) {
 
-    leaderElection.start('/my/path', 'my-name', function(err, node) {
-      console.log(err, node);
+    var election = new LeaderElection(client, '/my/path', 'my-name');
 
-      leaderElection.watch('/my/path');
+    election.on('gleader', function () {
+      console.log('t1')
+      done();
+    });
 
-      leaderElection.on('event', function(e) {
-        console.log('uo');
-        console.log(e);
-      });
+    var election2 = new LeaderElection(client, '/my/path', 'my-name');
 
-      //done();
+    election2.on('gleader', function () {
+      console.log('t2')
     });
   });
 });

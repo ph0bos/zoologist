@@ -13,7 +13,6 @@ var ServiceProvider             = require('./lib/ServiceProvider');
 var ServiceProviderBuilder      = require('./lib/ServiceProviderBuilder');
 var GetChildrenBuilder          = require('./lib/GetChildrenBuilder');
 var LeaderElection              = require('./lib/LeaderElection');
-var LeaderLatch                 = require('./lib/LeaderLatch');
 
 exports.Zoologist               = Zoologist;
 exports.ServiceDiscoveryBuilder = ServiceDiscoveryBuilder;
@@ -22,4 +21,3 @@ exports.ServiceProvider         = ServiceProvider;
 exports.ServiceProviderBuilder  = ServiceProviderBuilder;
 exports.GetChildrenBuilder      = GetChildrenBuilder;
 exports.LeaderElection          = LeaderElection;
-exports.LeaderLatch             = LeaderLatch;
