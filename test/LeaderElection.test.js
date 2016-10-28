@@ -1,3 +1,4 @@
+var async   = require('async');
 var mocha   = require('mocha');
 var mockery = require('mockery');
 var should  = require('chai').should();
@@ -5,10 +6,12 @@ var should  = require('chai').should();
 var Zoologist      = require('..').Zoologist;
 var LeaderElection = require('..').LeaderElection;
 
+var client;
+
 describe('LeaderElection', function() {
 
   beforeEach(function(){
-    client  = Zoologist.newClient('127.0.0.1:2181');
+    client = Zoologist.newClient('127.0.0.1:2181');
     client.start();
   });
 
@@ -17,24 +20,205 @@ describe('LeaderElection', function() {
     var election = new LeaderElection(client, '/my/path', 'my-name');
 
     election.on('gleader', function () {
-      election._isGLeader.should.be.true();
+      election.hasLeadership().should.be.true();
       done();
     });
   });
 
-  it('should trigger only one leader event when the leader is chosen', function(done) {
+  it('should trigger multiple leader messages when elections are withdrawn', function(done) {
+    this.timeout(10000);
 
-    var election = new LeaderElection(client, '/my/path', 'my-name');
+    var leaders = [];
 
-    election.on('gleader', function () {
-      console.log('t1')
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.on('gleader', function() {
+      leaders.push('Robert Baratheon');
+    });
+
+    election2.on('gleader', function() {
+      leaders.push('Joffrey Baratheon');
+    });
+
+    election3.on('gleader', function() {
+      leaders.push('Tommen Baratheon');
+    });
+
+    // Elect a new leader
+    setTimeout(function(){
+      leaders[0].should.equal('Robert Baratheon');
+      leaders.length.should.equal(1);
+
+      election1.hasLeadership().should.equal(true);
+      election2.hasLeadership().should.equal(false);
+      election3.hasLeadership().should.equal(false);
+
+      election1.withdraw(function(err){
+        console.log('Withdrawn Robert');
+      });
+    }, 2000);
+
+    // Elect a new leader
+    setTimeout(function(){
+      leaders[1].should.equal('Joffrey Baratheon');
+      leaders.length.should.equal(2);
+
+      election1.hasLeadership().should.equal(false);
+      election2.hasLeadership().should.equal(true);
+      election3.hasLeadership().should.equal(false);
+
+      election2.withdraw(function(err){
+        console.log('Withdrawn Joffery');
+      });
+    }, 4000);
+
+    // Elect a new leader
+    setTimeout(function(){
+      leaders[2].should.equal('Tommen Baratheon');
+      leaders.length.should.equal(3);
+
+      election1.hasLeadership().should.equal(false);
+      election2.hasLeadership().should.equal(false);
+      election3.hasLeadership().should.equal(true);
+
+      election3.withdraw(function(err){
+        console.log('Withdrawn Tommen');
+      });
+    }, 6000);
+
+    // Remove the last leader
+    setTimeout(function(){
+      leaders.length.should.equal(3);
+
+      election1.hasLeadership().should.equal(false);
+      election2.hasLeadership().should.equal(false);
+      election3.hasLeadership().should.equal(false);
+
+      done();
+    }, 8000);
+  });
+
+  it('should trigger new leader messages when new leaders are made', function(done) {
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election2.on('leader', function(leader) {
+      leader.should.equal(election1.znode);
       done();
     });
+  });
 
-    var election2 = new LeaderElection(client, '/my/path', 'my-name');
+  it('should trigger multiple leader messages when new leaders are made', function(done) {
+    this.timeout(10000);
 
-    election2.on('gleader', function () {
-      console.log('t2')
+    var leaders = [];
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election2.on('leader', function(leader) {
+      leaders.push(leader);
     });
+
+    election3.on('leader', function(leader) {
+      leaders.push(leader);
+    });
+
+    // Elect a new leader
+    setTimeout(function(){
+      leaders.length.should.equal(2);
+      leaders[0].should.equal(election1.znode);
+      leaders[1].should.equal(election2.znode);
+      done();
+    }, 2000);
+  });
+
+  it('should trigger new follow messages when new follows are made', function(done) {
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.on('follower', function(follower) {
+      follower.should.equal(election2.znode);
+      done();
+    });
+  });
+
+  it('should trigger multiple follow messages when new follows are made', function(done) {
+    this.timeout(10000);
+
+    var followers = [];
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.on('follower', function(follower) {
+      followers.push(follower);
+    });
+
+    election2.on('follower', function(follower) {
+      followers.push(follower);
+    });
+
+    // Elect a new leader
+    setTimeout(function(){
+      followers.length.should.equal(2);
+      followers[0].should.equal(election2.znode);
+      followers[1].should.equal(election3.znode);
+    }, 2000);
+
+    setTimeout(function(){
+      done();
+    }, 4000)
+  });
+
+  it('should trigger new follow topology when new topologys are made', function(done) {
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.on('topology', function(topology) {
+      topology[0].should.equal(election1.znode);
+      topology[1].should.equal(election2.znode);
+    });
+
+    setTimeout(function(){
+      done();
+    }, 2000)
+  });
+
+  it('should trigger multiple topology messages when new topologys are made', function(done) {
+    this.timeout(10000);
+
+    var topologys = [];
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.on('topology', function(topology) {
+      topologys.push(topology);
+    });
+
+    // Elect a new leader
+    setTimeout(function(){
+      election2.withdraw(function(err){});
+      election3.withdraw(function(err){});
+    }, 1000);
+
+    // Elect a new leader
+    setTimeout(function(){
+      topologys[0].length.should.be.greaterThan(1);
+      topologys[topologys.length -1 ].length.should.equal(1);
+    }, 5000);
+
+    setTimeout(function(){
+      done();
+    }, 8000)
   });
 });
