@@ -9,6 +9,7 @@ var LeaderElection = require('..').LeaderElection;
 var client;
 
 describe('LeaderElection', function() {
+  this.timeout(15000);
 
   beforeEach(function(){
     client = Zoologist.newClient('127.0.0.1:2181');
@@ -21,12 +22,12 @@ describe('LeaderElection', function() {
 
     election.on('gleader', function () {
       election.hasLeadership().should.be.true();
-      done();
+
+      coolDown(done, [election]);
     });
   });
 
   it('should trigger multiple leader messages when elections are withdrawn', function(done) {
-    this.timeout(10000);
 
     var leaders = [];
 
@@ -96,24 +97,22 @@ describe('LeaderElection', function() {
       election2.hasLeadership().should.equal(false);
       election3.hasLeadership().should.equal(false);
 
-      done();
+      coolDown(done, [election1, election2, election3]);
     }, 8000);
   });
 
   it('should trigger new leader messages when new leaders are made', function(done) {
-
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
     election2.on('leader', function(leader) {
       leader.should.equal(election1.znode);
-      done();
+
+      coolDown(done, [election1, election2]);
     });
   });
 
   it('should trigger multiple leader messages when new leaders are made', function(done) {
-    this.timeout(10000);
-
     var leaders = [];
 
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
@@ -133,7 +132,8 @@ describe('LeaderElection', function() {
       leaders.length.should.equal(2);
       leaders[0].should.equal(election1.znode);
       leaders[1].should.equal(election2.znode);
-      done();
+
+      coolDown(done, [election1, election2, election3]);
     }, 2000);
   });
 
@@ -144,12 +144,12 @@ describe('LeaderElection', function() {
 
     election1.on('follower', function(follower) {
       follower.should.equal(election2.znode);
-      done();
+
+      coolDown(done, [election1, election2]);
     });
   });
 
   it('should trigger multiple follow messages when new follows are made', function(done) {
-    this.timeout(10000);
 
     var followers = [];
 
@@ -170,31 +170,23 @@ describe('LeaderElection', function() {
       followers.length.should.equal(2);
       followers[0].should.equal(election2.znode);
       followers[1].should.equal(election3.znode);
-    }, 2000);
 
-    setTimeout(function(){
-      done();
-    }, 4000)
+      coolDown(done, [election1, election2, election3]);
+    }, 2000);
   });
 
   it('should trigger new follow topology when new topologys are made', function(done) {
-
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
     election1.on('topology', function(topology) {
       topology[0].should.equal(election1.znode);
       topology[1].should.equal(election2.znode);
+      coolDown(done, [election1, election2]);
     });
-
-    setTimeout(function(){
-      done();
-    }, 2000)
   });
 
   it('should trigger multiple topology messages when new topologys are made', function(done) {
-    this.timeout(10000);
-
     var topologys = [];
 
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
@@ -215,10 +207,20 @@ describe('LeaderElection', function() {
     setTimeout(function(){
       topologys[0].length.should.be.greaterThan(1);
       topologys[topologys.length -1 ].length.should.equal(1);
+      coolDown(done, [election1, election2, election3]);
     }, 5000);
-
-    setTimeout(function(){
-      done();
-    }, 8000)
   });
 });
+
+/**
+ * Withdraw the created elections and wait for them to clear from ZK.
+ *
+ * @param done
+ * @param elections
+ */
+function coolDown(done, elections){
+  elections.forEach(function(e){
+    e.withdraw(function(err){})
+  });
+  done();
+}
