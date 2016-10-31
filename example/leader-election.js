@@ -9,7 +9,7 @@ client.start();
 
 var election = new LeaderElection(client, '/my/path', 'my-id');
 
-election.on('gleader', function () {
+election.on('groupLeader', function () {
   console.log('I am the leader, watch me lead!');
 });
 

@@ -20,7 +20,7 @@ describe('LeaderElection', function() {
 
     var election = new LeaderElection(client, '/my/path', 'my-name');
 
-    election.on('gleader', function () {
+    election.on('groupLeader', function () {
       election.hasLeadership().should.be.true();
 
       coolDown(done, [election]);
@@ -35,15 +35,15 @@ describe('LeaderElection', function() {
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election1.on('gleader', function() {
+    election1.on('groupLeader', function() {
       leaders.push('Robert Baratheon');
     });
 
-    election2.on('gleader', function() {
+    election2.on('groupLeader', function() {
       leaders.push('Joffrey Baratheon');
     });
 
-    election3.on('gleader', function() {
+    election3.on('groupLeader', function() {
       leaders.push('Tommen Baratheon');
     });
 
