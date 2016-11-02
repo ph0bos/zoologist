@@ -105,7 +105,7 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election2.on('leader', function(leader) {
+    election2.on('myLeader', function(leader) {
       leader.should.equal(election1.znode);
 
       coolDown(done, [election1, election2]);
@@ -119,11 +119,11 @@ describe('LeaderElection', function() {
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election2.on('leader', function(leader) {
+    election2.on('myLeader', function(leader) {
       leaders.push(leader);
     });
 
-    election3.on('leader', function(leader) {
+    election3.on('myLeader', function(leader) {
       leaders.push(leader);
     });
 
@@ -142,7 +142,7 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election1.on('follower', function(follower) {
+    election1.on('myFollower', function(follower) {
       follower.should.equal(election2.znode);
 
       coolDown(done, [election1, election2]);
@@ -157,11 +157,11 @@ describe('LeaderElection', function() {
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election1.on('follower', function(follower) {
+    election1.on('myFollower', function(follower) {
       followers.push(follower);
     });
 
-    election2.on('follower', function(follower) {
+    election2.on('myFollower', function(follower) {
       followers.push(follower);
     });
 
@@ -179,7 +179,7 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election1.on('topology', function(topology) {
+    election1.on('topologyChange', function(topology) {
       topology[0].should.equal(election1.znode);
       topology[1].should.equal(election2.znode);
       coolDown(done, [election1, election2]);
@@ -193,7 +193,7 @@ describe('LeaderElection', function() {
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
-    election1.on('topology', function(topology) {
+    election1.on('topologyChange', function(topology) {
       topologys.push(topology);
     });
 

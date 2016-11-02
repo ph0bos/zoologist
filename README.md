@@ -120,15 +120,15 @@ election.on('groupLeader', function () {
   console.log('I am the leader, watch me lead!');
 });
 
-election.on('leader', function (myLeader) {
+election.on('myLeader', function (myLeader) {
   console.log('My leader is', myLeader);
 });
 
-election.on('follower', function (myFollower) {
+election.on('myFollower', function (myFollower) {
   console.log('My follower is', myFollower);
 });
 
-election.on('topology', function (data) {
+election.on('topologyChange', function (data) {
   console.log('Topology Change: ' + data);
 });
 
@@ -142,7 +142,7 @@ setInterval(function () {
 
 setInterval(function () {
   election.withdraw(function(err){
-    console.log("Withdrawning Election!);
+    console.log("Withdrawning Election!");
   });
 }, 10000);
 
