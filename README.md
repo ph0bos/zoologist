@@ -142,7 +142,7 @@ setInterval(function () {
 
 setInterval(function () {
   election.withdraw(function(err){
-    console.log("Withdrawning Election!");
+    console.log("Withdrawing Election!");
   });
 }, 10000);
 
