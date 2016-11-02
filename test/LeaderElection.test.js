@@ -210,6 +210,20 @@ describe('LeaderElection', function() {
       coolDown(done, [election1, election2, election3]);
     }, 5000);
   });
+
+  it('should trigger a error event when the client disconnects', function(done) {
+
+    var election = new LeaderElection(client, '/my/path', 'my-name');
+
+    election.on('groupLeader', function() {
+      client.close();
+    });
+
+    election.on('error', function (err) {
+      err.message.should.equal('disconnected from zk');
+      coolDown(done, [election]);
+    });
+  });
 });
 
 /**
