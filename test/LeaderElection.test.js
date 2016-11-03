@@ -224,6 +224,88 @@ describe('LeaderElection', function() {
       coolDown(done, [election]);
     });
   });
+
+  it('should trigger new leader messages when new leaders are made for different ids', function(done) {
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'pink-throne');
+
+    var leaders = [];
+
+    election1.on('groupLeader', function() {
+      leaders.push("Robert");
+    });
+
+    election2.on('groupLeader', function() {
+      leaders.push("Joffery");
+    });
+
+    setTimeout(function(){
+      leaders.length.should.equal(2);
+      leaders[0].should.equal('Robert');
+      leaders[1].should.equal('Joffery');
+      coolDown(done, [election1, election2]);
+    }, 3000)
+  });
+
+  it('should withdraw and destroy all znodes', function(done) {
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    var errors = [];
+
+    election1.on('error', function(err) {
+      errors.push(err);
+    });
+
+    election2.on('error', function(err) {
+      errors.push(err);
+    });
+
+    setTimeout(function(){
+      election1.destroy(function(err){
+        console.log("Destroyed all nodes")
+      })
+    }, 2000);
+
+    setTimeout(function(){
+      console.log(errors);
+
+      errors.length.should.equal(2);
+      done();
+    }, 4000)
+  });
+
+  it('should error when znode is forced deleted', function(done) {
+
+    var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+    var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    var errors = [];
+    var leader;
+
+    election1.on('error', function(err) {
+      errors.push(err);
+    });
+
+    election2.on('groupLeader', function() {
+      leader = 'Robert';
+    });
+
+    setTimeout(function(){
+      client
+        .getClient()
+        .remove('/seven/kingdoms/iron-throne/' + election1.znode, function(err){
+          console.log("Deleted znode 1")
+        });
+    }, 2000);
+
+    setTimeout(function(){
+      errors.length.should.equal(1);
+      leader.should.equal('Robert');
+      done();
+    }, 3000)
+  });
 });
 
 /**

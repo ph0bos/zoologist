@@ -134,6 +134,11 @@ election.on('topologyChange', function (data) {
 
 election.on('error', function (err) {
   console.log('Error: ' + err);
+  
+  // Restart election listener.
+  election.start(function(err){
+    console.log("Election restarting!");
+  });
 });
 
 setInterval(function () {
