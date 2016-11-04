@@ -1,10 +1,18 @@
 'use strict';
 
+var async = require('async');
+
 var Zoologist = require('..').Zoologist;
 
 var LeaderElection = require('..').LeaderElection;
 
 var client = Zoologist.newClient('127.0.0.1:2181');
+
+/*
+ * This represents how many active elections you will need at one time.
+ * The default is 10.
+ */
+client.setMaxListeners(1024);
 client.start();
 
 var election = new LeaderElection(client, '/my/path', 'my-id');
@@ -29,11 +37,9 @@ election.on('error', function (err) {
   console.log('Error: ' + err);
 
   // Restart election listener.
-  election.start(function(err){
+  election.start(function (err) {
     console.log("Election restarting!");
   });
 });
 
-setInterval(function () {
-  console.log(election.hasLeadership());
-}, 5000);
+
