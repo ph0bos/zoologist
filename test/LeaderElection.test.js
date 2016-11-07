@@ -20,6 +20,10 @@ describe('LeaderElection', function() {
 
     var election = new LeaderElection(client, '/my/path', 'my-name');
 
+    election.start(function(err, res){
+      console.log("Start the election")
+    });
+
     election.on('groupLeader', function () {
       election.hasLeadership().should.be.true();
 
@@ -34,6 +38,18 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election3.start(function(err, res){
+      console.log("Start the election")
+    });
 
     election1.on('groupLeader', function() {
       leaders.push('Robert Baratheon');
@@ -105,6 +121,14 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
+    election1.start(function(err, res){
+      console.log(res);
+    });
+
+    election2.start(function(err, res){
+      console.log(res);
+    });
+
     election2.on('myLeader', function(leader) {
       leader.should.equal(election1.znode);
 
@@ -118,6 +142,18 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election3.start(function(err, res){
+      console.log("Start the election")
+    });
 
     election2.on('myLeader', function(leader) {
       leaders.push(leader);
@@ -142,6 +178,14 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
+
     election1.on('myFollower', function(follower) {
       follower.should.equal(election2.znode);
 
@@ -156,6 +200,18 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election3.start(function(err, res){
+      console.log("Start the election")
+    });
 
     election1.on('myFollower', function(follower) {
       followers.push(follower);
@@ -179,6 +235,14 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
 
+    election1.start(function(err, res){
+      console.log(res);
+    });
+
+    election2.start(function(err, res){
+      console.log(res);
+    });
+
     election1.on('topologyChange', function(topology) {
       topology[0].should.equal(election1.znode);
       topology[1].should.equal(election2.znode);
@@ -192,6 +256,18 @@ describe('LeaderElection', function() {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election3 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election3.start(function(err, res){
+      console.log("Start the election")
+    });
 
     election1.on('topologyChange', function(topology) {
       topologys.push(topology);
@@ -215,6 +291,10 @@ describe('LeaderElection', function() {
 
     var election = new LeaderElection(client, '/my/path', 'my-name');
 
+    election.start(function(err, res){
+      console.log("Start the election")
+    });
+
     election.on('groupLeader', function() {
       client.close();
     });
@@ -228,6 +308,14 @@ describe('LeaderElection', function() {
   it('should trigger new leader messages when new leaders are made for different ids', function(done) {
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'pink-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
 
     var leaders = [];
 
@@ -251,6 +339,14 @@ describe('LeaderElection', function() {
 
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
 
     var errors = [];
 
@@ -280,6 +376,14 @@ describe('LeaderElection', function() {
 
     var election1 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
     var election2 = new LeaderElection(client, '/seven/kingdoms', 'iron-throne');
+
+    election1.start(function(err, res){
+      console.log("Start the election")
+    });
+
+    election2.start(function(err, res){
+      console.log("Start the election")
+    });
 
     var errors = [];
     var leader;
