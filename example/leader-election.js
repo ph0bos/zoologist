@@ -17,6 +17,10 @@ client.start();
 
 var election = new LeaderElection(client, '/my/path', 'my-id');
 
+election.start(function(err, res){
+  console.log(res);
+});
+
 election.on('groupLeader', function () {
   console.log('I am the leader, watch me lead!');
 });
@@ -36,10 +40,15 @@ election.on('topologyChange', function (data) {
 election.on('error', function (err) {
   console.log('Error: ' + err);
 
-  // Restart election listener.
-  election.start(function (err) {
-    console.log("Election restarting!");
+  election.withdraw(function(err){
+    console.log("Withdrawn the election!");
+
+      election.start(function(err, res){
+        console.log(res);
+      });
   });
 });
+
+
 
 
