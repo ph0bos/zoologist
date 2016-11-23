@@ -26,10 +26,9 @@
     "custom-error-generator": "^7.0.0",
     "memory-cache": "^0.1.6",
     "mockery": "^1.4.0",
-    "node-uuid": "^1.4.3",
     "node-zookeeper-client": "0.2.2",
     "underscore": "^1.8.3",
-    "uuid": "^2.0.1"
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "mocha": "1.x.x",
